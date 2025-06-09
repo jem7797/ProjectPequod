@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import MainPage from './LandingPage';
+import MainPage from './Components/LandingPage';
 
 const App = () => {
   return (
