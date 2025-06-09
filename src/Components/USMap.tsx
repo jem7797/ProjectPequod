@@ -22,7 +22,7 @@ const defaultStyle: GeoJSONProps['style'] = {
 
 const USMap: React.FC = () => {
   const [statesData, setStatesData] = useState<Feature<Geometry> | null>(null);
-  const [selectedState, setSelectedState] = useState<string | null>(null);
+  // Removed unused selectedState state variable
 
   useEffect(() => {
     fetch(usStatesUrl)
@@ -35,7 +35,7 @@ const USMap: React.FC = () => {
     layer.on({
       click: () => {
         const name = feature.properties?.name as string;
-        setSelectedState(name);
+        // setSelectedState(name); // Removed unused setter
         alert(`You clicked: ${name}`);
       },
       mouseover: (e: L.LeafletMouseEvent) => {
