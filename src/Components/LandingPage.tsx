@@ -6,6 +6,7 @@ import {
   Heading,
   Container,
 } from "@chakra-ui/react";
+import { Link } from "react-router";
 
 const LandingPage = () => {
   return (
@@ -76,32 +77,32 @@ const LandingPage = () => {
           lineHeight="1.5"
         >
           Predict home prices with advanced ML trained on gigabytes of
-          up-to-date data — because if you’re buying Earth, you should know
-          it’s worth.
+          up-to-date data — because if you’re buying Earth, you should know it’s
+          worth.
         </Text>
 
         <VStack spacing={6} align="center">
-          <Button
-            size="lg"
-            colorScheme="cyan"
-            variant="outline"
-            borderWidth="2px"
-            _hover={{
-              bg: "cyan.400",
-              color: "black",
-              boxShadow: "0 0 20px cyan",
-              borderColor: "cyan.400",
-            }}
-            _active={{
-              bg: "cyan.600",
-              boxShadow: "0 0 30px cyan",
-              color: "white",
-            }}
-          >
-            Start Predicting
-          </Button>
-
-         
+          <Link to={"/main-page"}>
+            <Button
+              size="lg"
+              colorScheme="cyan"
+              variant="outline"
+              borderWidth="2px"
+              _hover={{
+                bg: "cyan.400",
+                color: "black",
+                boxShadow: "0 0 20px cyan",
+                borderColor: "cyan.400",
+              }}
+              _active={{
+                bg: "cyan.600",
+                boxShadow: "0 0 30px cyan",
+                color: "white",
+              }}
+            >
+              Start Predicting
+            </Button>
+          </Link>
         </VStack>
       </Container>
     </Box>
