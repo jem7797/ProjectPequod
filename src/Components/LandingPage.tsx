@@ -7,6 +7,7 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { Link } from "react-router";
+import "../Styling/fonts.css"
 
 const LandingPage = () => {
   return (

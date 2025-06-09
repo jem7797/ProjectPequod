@@ -1,5 +1,6 @@
 import { Box, Heading, Container } from "@chakra-ui/react";
 import USMap from "./USMap";
+import "../Styling/fonts.css";
 
 const MainPage = () => {
   return (
@@ -8,7 +9,7 @@ const MainPage = () => {
       minHeight="100vh"
       bgGradient="linear(to-b, #0a0a0a, #121212)"
       color="cyan.300"
-      fontFamily="'Orbitron', sans-serif"
+      fontFamily="'audiowide', sans-serif"
       px={4}
       py={6}
       position="relative"
@@ -23,7 +24,7 @@ const MainPage = () => {
         height="100%"
         pointerEvents="none"
         opacity={0.12}
-      bgImage={`
+        bgImage={`
   repeating-linear-gradient(
     to right,
     rgba(0, 255, 255, 0.6),
@@ -50,6 +51,7 @@ const MainPage = () => {
           textAlign="center"
           mb={8}
           textShadow="0 0 6px #00ffff"
+          fontFamily={"audiowide"}
         >
           Explore the U.S. Housing Market
         </Heading>

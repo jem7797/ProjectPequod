@@ -9,11 +9,11 @@ const usStatesUrl =
 
 // Function returns default style for states — fresh object each call to avoid stale styles
 const getDefaultStyle = (): L.PathOptions => ({
-  fillColor: "#00ffff33",   // Light cyan fill with 20% opacity (0x33 hex) for subtle neon glow inside states
-  weight: 1,                // Border thickness of the state shapes
-  opacity: 0.8,               // Border opacity (fully visible)
-  color: "#00ffff77",       // Cyan border color with ~47% opacity (0x77 hex) for a glowing outline
-  fillOpacity: 1,           // Fill opacity maxed at 1 to respect fillColor alpha channel transparency
+  fillColor: "#00ffff33", // Light cyan fill with 20% opacity (0x33 hex) for subtle neon glow inside states
+  weight: 1, // Border thickness of the state shapes
+  opacity: 0.8, // Border opacity (mostly visible)
+  color: "#00ffff77", // Cyan border color with ~47% opacity (0x77 hex) for a glowing outline
+  fillOpacity: 1, // Fill opacity maxed at 1 to respect fillColor alpha channel transparency
 });
 
 const USMap: React.FC = () => {
@@ -35,12 +35,12 @@ const USMap: React.FC = () => {
       mouseover: (e: L.LeafletMouseEvent) => {
         const target = e.target as L.Path;
         target.setStyle({
-          weight: 2,               // Thicker border to highlight
-          color: "#012a81",        //  border on hover for contrast and emphasis
-          fillColor: "#00ffff88",  // Brighter cyan to highlight hovered state
-          fillOpacity: 0.5,        // Slightly transparent fill so underlying map peeks through
+          weight: 2, // Thicker border to highlight
+          color: "#012a81", // Border on hover for contrast and emphasis
+          fillColor: "#00ffff88", // Brighter cyan to highlight hovered state
+          fillOpacity: 0.5, // Slightly transparent fill so underlying map peeks through
         });
-        target.bringToFront();     
+        target.bringToFront();
       },
       mouseout: (e: L.LeafletMouseEvent) => {
         const target = e.target as L.Path;
@@ -69,12 +69,12 @@ const USMap: React.FC = () => {
           width: "100%",
           height: "100%",
           backgroundImage: `
-          linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),  // Horizontal cyan grid lines, very faint
-          linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)  // Vertical cyan grid lines
-        `,
+            linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),  /* Horizontal cyan grid lines, very faint */
+            linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px) /* Vertical cyan grid lines */
+          `,
           backgroundSize: "40px 40px", // Grid cell size
           zIndex: 1,
-          pointerEvents: "none",      // Let mouse events pass through grid overlay
+          pointerEvents: "none", // Let mouse events pass through grid overlay
         }}
       />
 
@@ -83,6 +83,9 @@ const USMap: React.FC = () => {
         zoom={4}
         style={{ height: "100%", width: "100%", zIndex: 2 }}
         zoomControl={false}
+        zoomAnimation={true} // Enable zoom animation for smooth transitions
+        zoomSnap={0.3} // Smaller snap to allow fractional zoom levels (smoother zoom)
+        zoomDelta={0.9} // Smaller zoom step increments for smooth zooming
       >
         {/* Base map tiles from OpenStreetMap with normal colors */}
         <TileLayer
@@ -94,7 +97,7 @@ const USMap: React.FC = () => {
           <GeoJSON
             data={statesData}
             onEachFeature={onEachState}
-            style={getDefaultStyle}  // Assign default neon style to states
+            style={getDefaultStyle} // Assign default neon style to states
           />
         )}
       </MapContainer>
