@@ -1,6 +1,9 @@
 import { Box, Heading, Container } from "@chakra-ui/react";
 import USMap from "./USMap";
 import "../Styling/fonts.css";
+import { motion } from "framer-motion";
+
+const MotionBox = motion(Box);
 
 const MainPage = () => {
   return (
@@ -15,16 +18,21 @@ const MainPage = () => {
       position="relative"
       overflow="hidden"
     >
-      {/* 🔷 Futuristic Grid Background */}
-      <Box
-        position="absolute"
-        top={0}
-        left={0}
-        width="100%"
-        height="100%"
-        pointerEvents="none"
-        opacity={0.12}
-        bgImage={`
+      <MotionBox
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      >
+        {/* 🔷 Futuristic Grid Background */}
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          width="100%"
+          height="100%"
+          pointerEvents="none"
+          opacity={0.12}
+          bgImage={`
   repeating-linear-gradient(
     to right,
     rgba(0, 255, 255, 0.6),
@@ -40,26 +48,31 @@ const MainPage = () => {
     transparent 40px
   )
 `}
-        bgSize="40px 40px"
-        zIndex={0}
-      />
+          bgSize="40px 40px"
+          zIndex={0}
+        />
 
-      <Container maxW="container.xl" zIndex={1} position="relative" pt={4}>
-        <Heading
-          as="h2"
-          fontSize={{ base: "2xl", md: "4xl" }}
-          textAlign="center"
-          mb={8}
-          textShadow="0 0 6px #00ffff"
-          fontFamily={"audiowide"}
-        >
-          Explore the U.S. Housing Market
-        </Heading>
+        <Container maxW="container.xl" zIndex={1} position="relative" pt={4}>
+          <Heading
+            as="h2"
+            fontSize={{ base: "2xl", md: "4xl" }}
+            textAlign="center"
+            mb={8}
+            textShadow="0 0 6px #00ffff"
+            fontFamily={"audiowide"}
+          >
+            Explore the U.S. Housing Market
+          </Heading>
 
-        <Box borderRadius="xl" overflow="hidden" boxShadow="0 0 30px #00ffff88">
-          <USMap />
-        </Box>
-      </Container>
+          <Box
+            borderRadius="xl"
+            overflow="hidden"
+            boxShadow="0 0 30px #00ffff88"
+          >
+            <USMap />
+          </Box>
+        </Container>
+      </MotionBox>
     </Box>
   );
 };

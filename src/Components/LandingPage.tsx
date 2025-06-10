@@ -7,7 +7,7 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { Link } from "react-router";
-import "../Styling/fonts.css"
+import "../Styling/fonts.css";
 
 const LandingPage = () => {
   return (
@@ -65,6 +65,7 @@ const LandingPage = () => {
           fontSize={{ base: "3xl", md: "7xl" }}
           mb={12} // bigger gap here
           textShadow="0 0 8px #00ffff"
+          fontFamily={"audiowide"}
         >
           Project Horace
         </Heading>
@@ -76,6 +77,7 @@ const LandingPage = () => {
           maxW="600px"
           mx="auto"
           lineHeight="1.5"
+          fontFamily={"audiowide"}
         >
           Predict home prices with advanced ML trained on gigabytes of
           up-to-date data — because if you’re buying Earth, you should know it’s
@@ -100,6 +102,8 @@ const LandingPage = () => {
                 boxShadow: "0 0 30px cyan",
                 color: "white",
               }}
+                        fontFamily={"audiowide"}
+
             >
               Start Predicting
             </Button>
