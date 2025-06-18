@@ -67,7 +67,7 @@ const LandingPage = () => {
           textShadow="0 0 8px #00ffff"
           fontFamily={"audiowide"}
         >
-          Project Horace
+          Project Pequod 
         </Heading>
 
         <Text
