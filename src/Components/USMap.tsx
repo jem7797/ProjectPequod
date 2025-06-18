@@ -19,6 +19,40 @@ const getDefaultStyle = (): L.PathOptions => ({
 const USMap: React.FC = () => {
   const [statesData, setStatesData] = useState<Feature<Geometry> | null>(null);
 
+  const predictPrice = async ({
+    state,
+    city,
+    bedrooms,
+    bathrooms,
+    sqft,
+  }: {
+    state: string;
+    city: string;
+    bedrooms: number;
+    bathrooms: number;
+    sqft: number;
+  }) => {
+    try {
+      const response = await fetch("https://housing-model-api-359511347434.us-central1.run.app", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ state, city, bedrooms, bathrooms, sqft }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Prediction failed");
+      }
+
+      const data = await response.json();
+      alert(`Estimated price: $${data.predicted_price}`);
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong during prediction.");
+    }
+  };
+
   useEffect(() => {
     fetch(usStatesUrl)
       .then((res) => res.json())
@@ -28,23 +62,41 @@ const USMap: React.FC = () => {
 
   const onEachState = (feature: Feature, layer: L.Layer) => {
     layer.on({
-      click: () => {
-        const name = feature.properties?.name as string;
-        alert(`You selected: ${name}`);
+      click: async () => {
+        const stateName = feature.properties?.name as string;
+
+        const city = prompt(`Enter the city/borough for ${stateName}:`);
+        if (!city) return;
+
+        const bedrooms = parseInt(prompt("Enter number of bedrooms:") || "0", 10);
+        if (isNaN(bedrooms)) return;
+
+        const bathrooms = parseInt(prompt("Enter number of bathrooms:") || "0", 10);
+        if (isNaN(bathrooms)) return;
+
+        const sqft = parseInt(prompt("Enter square footage:") || "0", 10);
+        if (isNaN(sqft)) return;
+
+        await predictPrice({
+          state: stateName,
+          city,
+          bedrooms,
+          bathrooms,
+          sqft,
+        });
       },
       mouseover: (e: L.LeafletMouseEvent) => {
         const target = e.target as L.Path;
         target.setStyle({
-          weight: 2, // Thicker border to highlight
-          color: "#012a81", // Border on hover for contrast and emphasis
-          fillColor: "#00ffff88", // Brighter cyan to highlight hovered state
-          fillOpacity: 0.5, // Slightly transparent fill so underlying map peeks through
+          weight: 2,
+          color: "#012a81",
+          fillColor: "#00ffff88",
+          fillOpacity: 0.5,
         });
         target.bringToFront();
       },
       mouseout: (e: L.LeafletMouseEvent) => {
         const target = e.target as L.Path;
-        // Reset style to default using fresh object to avoid permanent hover color
         target.setStyle(getDefaultStyle());
       },
     });
