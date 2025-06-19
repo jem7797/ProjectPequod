@@ -33,13 +33,16 @@ const USMap: React.FC = () => {
     sqft: number;
   }) => {
     try {
-      const response = await fetch("https://housing-model-api-359511347434.us-central1.run.app", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ state, city, bedrooms, bathrooms, sqft }),
-      });
+      const response = await fetch(
+        "https://housing-model-359511347434.us-central1.run.app/predict",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ state, city, bedrooms, bathrooms, sqft }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Prediction failed");
@@ -68,10 +71,16 @@ const USMap: React.FC = () => {
         const city = prompt(`Enter the city/borough for ${stateName}:`);
         if (!city) return;
 
-        const bedrooms = parseInt(prompt("Enter number of bedrooms:") || "0", 10);
+        const bedrooms = parseInt(
+          prompt("Enter number of bedrooms:") || "0",
+          10
+        );
         if (isNaN(bedrooms)) return;
 
-        const bathrooms = parseInt(prompt("Enter number of bathrooms:") || "0", 10);
+        const bathrooms = parseInt(
+          prompt("Enter number of bathrooms:") || "0",
+          10
+        );
         if (isNaN(bathrooms)) return;
 
         const sqft = parseInt(prompt("Enter square footage:") || "0", 10);
@@ -141,7 +150,7 @@ const USMap: React.FC = () => {
       >
         {/* Base map tiles from OpenStreetMap with normal colors */}
         <TileLayer
-url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           attribution=""
         />
 
