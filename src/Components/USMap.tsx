@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import L from "leaflet";
-import type { Feature, Geometry } from "geojson";
+import type { Feature, FeatureCollection, Geometry } from "geojson";
 import "leaflet/dist/leaflet.css";
 
 const usStatesUrl =
   "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json";
 
-// Function returns default style for states — fresh object each call to avoid stale styles
+// Function returns default style for states — fresh object each call
 const getDefaultStyle = (): L.PathOptions => ({
-  fillColor: "#00ffff33", // Light cyan fill with 20% opacity (0x33 hex) for subtle neon glow inside states
-  weight: 1, // Border thickness of the state shapes
-  opacity: 0.8, // Border opacity (mostly visible)
-  color: "#00ffff77", // Cyan border color with ~47% opacity (0x77 hex) for a glowing outline
-  fillOpacity: 1, // Fill opacity maxed at 1 to respect fillColor alpha channel transparency
+  fillColor: "#00ffff33",
+  weight: 1,
+  opacity: 0.8,
+  color: "#00ffff77",
+  fillOpacity: 1,
 });
 
 const USMap: React.FC = () => {
-  const [statesData, setStatesData] = useState<Feature<Geometry> | null>(null);
+  const [statesData, setStatesData] = useState<FeatureCollection<Geometry> | null>(null);
 
   const predictPrice = async ({
     state,
@@ -33,31 +33,39 @@ const USMap: React.FC = () => {
     sqft: number;
   }) => {
     try {
-      const response = await fetch("https://housing-model-api-359511347434.us-central1.run.app", {
+      const response = await fetch("https://house-price-api-359511347434.us-central1.run.app/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ state, city, bedrooms, bathrooms, sqft }),
+        body: JSON.stringify({
+          state,
+          city,
+          beds: bedrooms,
+          baths: bathrooms,
+          living_space: sqft,
+        }),
       });
 
       if (!response.ok) {
-        throw new Error("Prediction failed");
+        throw new Error(`API Error: ${response.status}`);
       }
 
       const data = await response.json();
-      alert(`Estimated price: $${data.predicted_price}`);
+      alert(`Estimated price: $${data.price.toLocaleString()}`);
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong during prediction.");
+      console.error("Prediction error:", error);
+      alert("Something went wrong during prediction. Check console.");
     }
   };
 
   useEffect(() => {
     fetch(usStatesUrl)
       .then((res) => res.json())
-      .then((data: Feature<Geometry>) => setStatesData(data))
-      .catch(console.error);
+      .then((data: FeatureCollection<Geometry>) => setStatesData(data))
+      .catch((err) => {
+        console.error("Failed to load GeoJSON:", err);
+      });
   }, []);
 
   const onEachState = (feature: Feature, layer: L.Layer) => {
@@ -107,8 +115,7 @@ const USMap: React.FC = () => {
       style={{
         position: "relative",
         height: "100vh",
-        background:
-          "radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%)",
+        background: "radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%)",
         overflow: "hidden",
       }}
     >
@@ -121,12 +128,12 @@ const USMap: React.FC = () => {
           width: "100%",
           height: "100%",
           backgroundImage: `
-            linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),  /* Horizontal cyan grid lines, very faint */
-            linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px) /* Vertical cyan grid lines */
+            linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
           `,
-          backgroundSize: "40px 40px", // Grid cell size
+          backgroundSize: "40px 40px",
           zIndex: 1,
-          pointerEvents: "none", // Let mouse events pass through grid overlay
+          pointerEvents: "none",
         }}
       />
 
@@ -135,21 +142,20 @@ const USMap: React.FC = () => {
         zoom={4}
         style={{ height: "100%", width: "100%", zIndex: 2 }}
         zoomControl={false}
-        zoomAnimation={true} // Enable zoom animation for smooth transitions
-        zoomSnap={0.3} // Smaller snap to allow fractional zoom levels (smoother zoom)
-        zoomDelta={0.9} // Smaller zoom step increments for smooth zooming
+        zoomAnimation={true}
+        zoomSnap={0.3}
+        zoomDelta={0.9}
       >
-        {/* Base map tiles from OpenStreetMap with normal colors */}
         <TileLayer
-url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution=""
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          attribution='© OpenStreetMap contributors'
         />
 
         {statesData && (
           <GeoJSON
             data={statesData}
             onEachFeature={onEachState}
-            style={getDefaultStyle} // Assign default neon style to states
+            style={getDefaultStyle}
           />
         )}
       </MapContainer>
