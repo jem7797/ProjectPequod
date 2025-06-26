@@ -43,19 +43,22 @@ const USMap: React.FC = () => {
       setLoading(true);
       setPredictedPrice(null);
 
-      const response = await fetch("https://house-price-api-359511347434.us-central1.run.app/predict", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          state,
-          city,
-          beds: bedrooms,
-          baths: bathrooms,
-          living_space: sqft,
-        }),
-      });
+      const response = await fetch(
+        "https://house-price-api-359511347434.us-central1.run.app/predict",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            state,
+            city,
+            beds: bedrooms,
+            baths: bathrooms,
+            living_space: sqft,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`API Error: ${response.status}`);
@@ -80,6 +83,14 @@ const USMap: React.FC = () => {
       bathrooms,
       sqft,
     });
+  };
+
+  const handleModalClose = () => {
+    setCity("");
+    setBedrooms(2);
+    setBathrooms(1);
+    setSqft(1000);
+    setModalVisible(false);
   };
 
   useEffect(() => {
@@ -195,6 +206,24 @@ const USMap: React.FC = () => {
             width: "300px",
           }}
         >
+          {/* Exit Button */}
+          <button
+            onClick={handleModalClose}
+            style={{
+              position: "absolute",
+              top: "8px",
+              right: "12px",
+              background: "transparent",
+              border: "none",
+              color: "#0ff",
+              fontSize: "1.2rem",
+              cursor: "pointer",
+            }}
+            aria-label="Close Modal"
+          >
+            ×
+          </button>
+
           <h3>Predict for {selectedState}</h3>
           <div style={{ marginBottom: "1rem" }}>
             <label>City: </label>
