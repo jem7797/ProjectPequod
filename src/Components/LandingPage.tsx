@@ -79,7 +79,7 @@ const LandingPage = () => {
           lineHeight="1.5"
           fontFamily={"audiowide"}
         >
-          Predict home prices with advanced ML trained on gigabytes of
+          Predict home prices with our advance ML model named Ahab who was trained on gigabytes of
           up-to-date data — because if you’re buying Earth, you should know it’s
           worth.
         </Text>
