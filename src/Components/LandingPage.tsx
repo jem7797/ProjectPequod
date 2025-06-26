@@ -64,7 +64,7 @@ const LandingPage = () => {
           as="h1"
           fontSize={{ base: "3xl", md: "7xl" }}
           mb={12} // bigger gap here
-          textShadow="0 0 8px #00ffff"
+          textShadow="0 0 3px #00ffff"
           fontFamily={"audiowide"}
         >
           Project Pequod 
@@ -73,7 +73,7 @@ const LandingPage = () => {
         <Text
           fontSize={{ base: "md", md: "xl" }}
           mb={10}
-          textShadow="0 0 6px #00ffff"
+          textShadow="0 0 1px #00ffff"
           maxW="600px"
           mx="auto"
           lineHeight="1.5"
