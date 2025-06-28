@@ -102,7 +102,7 @@ const LandingPage = () => {
                 boxShadow: "0 0 30px cyan",
                 color: "white",
               }}
-                        fontFamily={"audiowide"}
+               fontFamily={"audiowide"}
 
             >
               Start Predicting

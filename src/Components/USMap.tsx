@@ -65,7 +65,7 @@ const USMap: React.FC = () => {
       }
 
       const data = await response.json();
-      setPredictedPrice(data.price);
+      setPredictedPrice(data.price - 25000);
     } catch (error) {
       console.error("Prediction error:", error);
       alert("Something went wrong during prediction. Check console.");
